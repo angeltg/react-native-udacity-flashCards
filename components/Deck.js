@@ -1,34 +1,49 @@
 import React, { Component } from "react";
 
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, View, Text } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/Ionicons";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import DeckView from "./DeckView";
+const Deck = (props) => {
+  const { onPress, deck } = props;
+  const { questions, name } = deck;
 
-function HomeScreen({ navigation }) {
+  const numberQuestions = questions ? Object.keys(questions).length : 0;
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <TouchableOpacity onPress={() => navigation.navigate("DeckView")}>
-        <Text>Deck1</Text>
-        <Text>2 cards</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={() => onPress(deck)}>
+      <View style={styles.container}>
+        <Icon name="md-book" size={50} color="#1976d2" style={styles.image} />
+        <View>
+          <Text>{name}</Text>
+          <Text>{numberQuestions} cards</Text>
+        </View>
+        <Icon
+          name="md-arrow-dropright"
+          size={28}
+          color="black"
+          style={styles.icon}
+        />
+      </View>
+    </TouchableOpacity>
   );
-}
+};
 
-const Stack = createStackNavigator();
-
-class Deck extends Component {
-  render() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-
-        <Stack.Screen name="DeckView" component={DeckView} />
-      </Stack.Navigator>
-    );
-  }
-}
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  icon: {
+    marginLeft: "auto",
+    paddingTop: 15,
+  },
+});
 
 export default Deck;
