@@ -7,12 +7,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ListDecks from "./components/ListDecks";
 import NewDeck from "./components/NewDeck";
-import Deck from "./components/Deck";
 import DeckView from "./components/DeckView";
 import Quiz from "./components/Quiz";
 import NewCard from "./components/NewCard";
 import QuizResult from "./components/QuizResult";
 import store from "./store";
+import { setLocalNotification } from "./utils/Notifications";
 
 const Tab = createBottomTabNavigator();
 Tab.navigationOptions = {
@@ -46,13 +46,18 @@ function StackScreemList() {
       />
       <Stack.Screen
         name="NewCard"
-        options={{ title: "Create a new deck" }}
+        options={{ title: "Create a new card" }}
         component={NewCard}
       />
       <Stack.Screen
         name="QuizResult"
         options={{ title: "Quiz result" }}
         component={QuizResult}
+      />
+      <Stack.Screen
+        name="NewDeck"
+        options={{ title: "New deck" }}
+        component={NewDeck}
       />
     </Stack.Navigator>
   );
@@ -67,6 +72,10 @@ function StackScreemNewDeck() {
 }
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={store}>

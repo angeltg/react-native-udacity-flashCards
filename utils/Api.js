@@ -13,15 +13,13 @@ export const saveDeck = (name) => {
     id: generateUID(),
     name,
     questions: [],
-    lastScore: "",
-    bestScore: "",
   };
   return merge(newDeck).then(() => {
     return newDeck;
   });
 };
 
-export const removeDeckFile = (deckId) => {
+export const deleteDeck = (deckId) => {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY).then((results) => {
     const data = JSON.parse(results);
     data[deckId] = undefined;
@@ -30,40 +28,11 @@ export const removeDeckFile = (deckId) => {
   });
 };
 
-export const saveScore = (deck, score) => {
-  const roundedScore = Math.round(score);
-  const data = {
-    lastScore: roundedScore,
-    bestScore: roundedScore > deck.bestScore ? roundedScore : deck.bestScore,
-  };
-  return updateDeck(deck, data);
-};
-
-export const updateDeck = (deck, changes) => {
-  const updatedDeck = {
-    ...deck,
-    ...changes,
-  };
-  return merge(updatedDeck).then(() => {
-    return updatedDeck;
-  });
-};
-
 export const saveQuestion = (question, deck) => {
   question["id"] = generateUID();
   const updatedDeck = {
     ...deck,
     questions: deck.questions.concat([question]),
-  };
-  return merge(updatedDeck).then(() => {
-    return question;
-  });
-};
-
-export const removeQuestion = (question, deck) => {
-  const updatedDeck = {
-    ...deck,
-    questions: deck.questions.filter((q) => q.id !== question.id),
   };
   return merge(updatedDeck).then(() => {
     return question;

@@ -22,17 +22,12 @@ class NewCard extends Component {
       question: "",
       answer: "",
     });
-    this.back();
-  };
-
-  back = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("DeckView", this.props.decks[deck.id]);
   };
 
   render() {
-    const { id } = this.props.route.params;
+    const { id, name } = this.props.route.params;
     const deck = this.props.decks[id];
-    const { name } = deck;
 
     return (
       <View style={styles.sectionCenter}>

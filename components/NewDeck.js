@@ -5,6 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -25,7 +26,11 @@ class NewDeck extends Component {
 
     saveDeck(name).then((deck) => {
       this.props.dispatch(newDeck(deck));
-      this.props.navigation.navigate("DeckView", deck);
+      Alert.alert("Great!", `${name} is a new deck`, [
+        {
+          text: "Ok",
+        },
+      ]);
     });
 
     this.setState({ name: "" });

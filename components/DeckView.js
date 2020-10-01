@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { View, Text, Alert, TouchableOpacity, StyleSheet } from "react-native";
 
 import { removeDeck } from "../actions";
-import { removeDeckFile } from "../utils/Api";
+import { deleteDeck } from "../utils/Api";
 
 class DeckView extends Component {
   handleOnPressOpenQuiz = (id, numberQuestions) => {
@@ -32,21 +32,20 @@ class DeckView extends Component {
         text: "Delete",
         onPress: () => {
           this.props.dispatch(removeDeck(id));
-          this.back();
-          removeDeckFile(id);
+          deleteDeck(id).then(this.props.navigation.navigate("ListDeck"));
         },
       },
     ]);
   };
 
-  back = () => {
-    this.props.navigation.navigate("ListDecks");
-  };
-
   render() {
-    const { name, id, questions } = this.props.route.params;
+    const { id, name, questions } = this.props.route.params;
+    const deck = this.props.decks[id];
+    const actuallyQuestions = !!deck ? deck.questions : questions;
 
-    const numberQuestions = questions ? Object.keys(questions).length : 0;
+    const numberQuestions = actuallyQuestions
+      ? Object.keys(actuallyQuestions).length
+      : 0;
     return (
       <View style={styles.sectionCenter}>
         <Text style={styles.title}>{name}</Text>
@@ -74,6 +73,12 @@ class DeckView extends Component {
       </View>
     );
   }
+}
+
+function mapStateToProps(decks = {}) {
+  return {
+    decks,
+  };
 }
 
 const styles = StyleSheet.create({
@@ -117,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(DeckView);
+export default connect(mapStateToProps)(DeckView);

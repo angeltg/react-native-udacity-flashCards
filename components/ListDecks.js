@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { Feather } from "@expo/vector-icons";
 
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableHighlight,
+} from "react-native";
 import { withNavigation } from "react-navigation";
 
 import { connect } from "react-redux";
@@ -17,6 +22,9 @@ class ListDecks extends Component {
   handleOnPressOpenDeck = (deck) => {
     this.props.navigation.navigate("DeckView", deck);
   };
+  handleOnPressNewDeck = (deck) => {
+    this.props.navigation.navigate("NewDeck");
+  };
 
   render() {
     const { decks } = this.props;
@@ -24,10 +32,16 @@ class ListDecks extends Component {
     if (Object.keys(decks).length === 0) {
       return (
         <View style={styles.empty}>
-          <View style={styles.icon}>
-            <Feather name="book-open" size={150} color="grey" />
+          <Text>No Decks yet!</Text>
+          <View>
+            <TouchableHighlight
+              underlayColor="#63a4ff"
+              style={styles.buttonContainerPrimary}
+              onPress={this.handleOnPressNewDeck}
+            >
+              <Text style={styles.button}>Add new deck</Text>
+            </TouchableHighlight>
           </View>
-          <Text>No Decks</Text>
         </View>
       );
     }
@@ -70,6 +84,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     textAlign: "center",
+  },
+  buttonContainerPrimary: {
+    backgroundColor: "#1976d2",
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    alignItems: "center",
+    marginTop: 10,
+    marginLeft: 2,
+    marginRight: 2,
+    elevation: 5,
+  },
+
+  button: {
+    color: "#fff",
+    fontSize: 18,
   },
 });
 

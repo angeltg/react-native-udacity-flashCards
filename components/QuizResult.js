@@ -3,6 +3,11 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
 import { withNavigation } from "react-navigation";
+import {
+  getDailyReminderValue,
+  clearLocalNotification,
+  setLocalNotification,
+} from "../utils/Notifications";
 
 class QuizResult extends Component {
   handleRestartQuiz = (id) => {
@@ -13,12 +18,17 @@ class QuizResult extends Component {
     this.props.navigation.navigate("DeckView", { deck });
   };
 
+  componentDidMount() {
+    clearLocalNotification().then(setLocalNotification);
+  }
+
   render() {
     const { decks } = this.props;
     const { id, totalQuestions, correctAnswer } = this.props.route.params;
     const deck = decks[id];
     const { name } = deck;
     const totalFaild = totalQuestions - correctAnswer;
+
     return (
       <View style={styles.sectionCenter}>
         <Text style={styles.title}>{name}</Text>
